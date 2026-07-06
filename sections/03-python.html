@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install Python | VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="Check whether Python is installed and get it working cleanly for VS Code, WSL, remote machines, and notebooks."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --tip-bg: #ecfeff;
+      --tip-border: #67e8f9;
+      --tip-text: #155e75;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+      --radius: 22px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 34%, #f8fafc 34%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 56px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .content-panel {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .section-number {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin: 34px 0 10px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #334155;
+    }
+
+    ul {
+      margin: 0 0 24px;
+      padding-left: 1.3rem;
+      color: #334155;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .tip {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+    }
+
+    .tip strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #164e63;
+    }
+
+    .code-block {
+      position: relative;
+      margin: 18px 0 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--code-bg);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .code-label {
+      padding: 10px 16px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 16px;
+      overflow-x: auto;
+      color: var(--code-text);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .download-card {
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+    }
+
+    .download-card p {
+      margin-bottom: 16px;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #082f49;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.22);
+      transition:
+        transform 160ms ease,
+        background 160ms ease;
+    }
+
+    .download-link:hover {
+      transform: translateY(-2px);
+      background: #7dd3fc;
+    }
+
+    .next-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-card {
+      flex: 1;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .next-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .next-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .next-card strong {
+      color: var(--accent-dark);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .next-section {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="../index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#sections">Sections</a>
+          <a href="02-vscode.html">Previous</a>
+          <a href="04-environments.html">Next</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Section 03
+        </div>
+
+        <h1>Install Python</h1>
+
+        <p>
+          Python is the main language for this workflow. Before installing
+          anything, the first move is to check whether your machine or remote
+          system already has it.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Check Python</a>
+          <a class="button button-secondary" href="https://www.python.org/downloads/" target="_blank" rel="noreferrer">
+            Python downloads
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <article class="content-panel" id="start">
+          <div class="section-number">03</div>
+
+          <p>
+            We use <strong>Python</strong> for basically everything. It is
+            simple, powerful, and works well with all the tools we use.
+          </p>
+
+          <h2>First: check if you already have it</h2>
+
+          <p>Before installing anything, just check:</p>
+
+          <div class="code-block">
+            <div class="code-label">Terminal</div>
+            <pre><code>python3 --version</code></pre>
+          </div>
+
+          <p>
+            If you see a version number, you are good. No need to reinstall.
+          </p>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            If you are working on a remote machine, you likely already have
+            Python. If you are using the ICER cluster, then it is probably a
+            module.
+          </div>
+
+          <h2>If you do not have Python</h2>
+
+          <p>
+            Installation can vary depending on your machine, so do not stress
+            about memorizing commands.
+          </p>
+
+          <p>The easiest options are:</p>
+
+          <ul>
+            <li>
+              Go to the official Python downloads page and install it normally.
+            </li>
+            <li>
+              Or search for <strong>install Python on [your system]</strong> and
+              follow a walkthrough for your operating system.
+            </li>
+          </ul>
+
+          <div class="download-card">
+            <p>Official Python downloads:</p>
+
+            <a
+              class="download-link"
+              href="https://www.python.org/downloads/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              python.org/downloads
+            </a>
+          </div>
+
+          <h2>Mac optional install</h2>
+
+          <p>
+            On Mac, one common option is Homebrew:
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">Mac terminal</div>
+            <pre><code>brew install python</code></pre>
+          </div>
+
+          <h2>Windows note</h2>
+
+          <p>
+            If you are on Windows, it is strongly recommended to use WSL,
+            or Windows Subsystem for Linux.
+          </p>
+
+          <p>
+            Install WSL first, then install Python inside WSL. This gives you a
+            much smoother setup.
+          </p>
+
+          <h2>That is it</h2>
+
+          <p>
+            Once <code>python3 --version</code> works, you are done.
+          </p>
+
+          <p>
+            VS Code will use this automatically for running code, notebooks, and
+            everything else.
+          </p>
+
+          <div class="next-section">
+            <a class="next-card" href="02-vscode.html">
+              <span>Previous section</span>
+              <strong>02. VS Code</strong>
+            </a>
+
+            <a class="next-card" href="04-environments.html">
+              <span>Next section</span>
+              <strong>04. Miniforge and Micromamba</strong>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

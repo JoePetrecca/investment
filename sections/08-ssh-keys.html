@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSH Keys | VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="Set up SSH keys for faster authentication with remote machines, GitHub, and other development tools."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --tip-bg: #ecfeff;
+      --tip-border: #67e8f9;
+      --tip-text: #155e75;
+      --warning-bg: #fff7ed;
+      --warning-border: #fdba74;
+      --warning-text: #9a3412;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+      --radius: 22px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 34%, #f8fafc 34%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 56px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .content-panel {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .section-number {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin: 38px 0 12px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      margin: 30px 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #334155;
+    }
+
+    ul {
+      margin: 0 0 24px;
+      padding-left: 1.3rem;
+      color: #334155;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .tip,
+    .warning {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+    }
+
+    .tip {
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+    }
+
+    .warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .tip strong,
+    .warning strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .tip strong {
+      color: #164e63;
+    }
+
+    .warning strong {
+      color: #7c2d12;
+    }
+
+    .code-block {
+      position: relative;
+      margin: 18px 0 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--code-bg);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .code-label {
+      padding: 10px 16px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 16px;
+      overflow-x: auto;
+      color: var(--code-text);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .step {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card-soft);
+    }
+
+    .step h2,
+    .step h3 {
+      margin-top: 0;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 28px;
+    }
+
+    .option-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+    }
+
+    .option-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent-dark);
+    }
+
+    .option-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .screenshot {
+      margin: 18px auto 4px;
+      padding: 10px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .screenshot img {
+      display: block;
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      border-radius: 12px;
+    }
+
+    .next-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-card {
+      flex: 1;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .next-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .next-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .next-card strong {
+      color: var(--accent-dark);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .next-section {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="../index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#sections">Sections</a>
+          <a href="07-peacock.html">Previous</a>
+          <a href="09-ruff.html">Next</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Section 08
+        </div>
+
+        <h1>SSH Keys</h1>
+
+        <p>
+          SSH keys make authentication smoother. Instead of typing your password
+          over and over, you create a key once and tell remote machines or
+          services to trust it.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Start setup</a>
+          <a class="button button-secondary" href="../index.html#sections">Back to sections</a>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <article class="content-panel" id="start">
+          <div class="section-number">08</div>
+
+          <p>
+            SSH keys are one of those things that sound more intimidating than
+            they actually are.
+          </p>
+
+          <p>
+            The short version is this: instead of typing your password over and
+            over, you create a key on your computer and then tell other machines
+            or services to trust it. After that, things get much smoother.
+          </p>
+
+          <p>This is useful for:</p>
+
+          <ul>
+            <li>Logging into remote machines</li>
+            <li>Using GitHub over SSH</li>
+            <li>Avoiding repeated password prompts</li>
+          </ul>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            You only really need to set this up once per computer. Then you just
+            add it wherever you need it.
+          </div>
+
+          <section class="step">
+            <h2>Step 1: Check whether you already have a key</h2>
+
+            <p>
+              Before making a new one, check whether you already have SSH keys.
+            </p>
+
+            <p>Run:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>ls -la ~/.ssh</code></pre>
+            </div>
+
+            <p>If you already see files like these:</p>
+
+            <div class="code-block">
+              <div class="code-label">Example key files</div>
+              <pre><code>id_ed25519
+id_ed25519.pub</code></pre>
+            </div>
+
+            <p>
+              Then you probably already have a key pair.
+            </p>
+
+            <p>
+              The <code>.pub</code> file is the public key. That is the one you
+              share.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Step 2: Generate a new key if you do not have one</h2>
+
+            <p>
+              The recommended kind of SSH key is <code>ed25519</code>.
+            </p>
+
+            <p>Run:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>ssh-keygen -t ed25519 -C "your_email@example.com"</code></pre>
+            </div>
+
+            <p>
+              You can replace <code>your_email@example.com</code> with your
+              email. This is just a label so you know what the key is.
+            </p>
+
+            <p>
+              After that, it will ask you a few questions.
+            </p>
+
+            <h3>Where to save the key</h3>
+
+            <p>You will see something like:</p>
+
+            <div class="code-block">
+              <div class="code-label">Prompt</div>
+              <pre><code>Enter file in which to save the key (/Users/yourname/.ssh/id_ed25519):</code></pre>
+            </div>
+
+            <p>
+              Just press Enter. That uses the default location, which is usually
+              exactly what you want.
+            </p>
+
+            <h3>Passphrase</h3>
+
+            <p>Then it will ask for a passphrase.</p>
+
+            <p>You have two options:</p>
+
+            <ul>
+              <li>Type a passphrase for extra security</li>
+              <li>Or just press Enter twice if you do not want one</li>
+            </ul>
+
+            <p>
+              If you are new to this, either is fine. A passphrase is more
+              secure, but it does mean one extra thing to remember.
+            </p>
+
+            <p>When it finishes, you should see something like:</p>
+
+            <div class="code-block">
+              <div class="code-label">Example output</div>
+              <pre><code>Your identification has been saved in /Users/yourname/.ssh/id_ed25519
+Your public key has been saved in /Users/yourname/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <div class="tip">
+              <strong>Tip</strong>
+              The private key is <code>id_ed25519</code>. Keep that one private.
+              <br /><br />
+              The public key is <code>id_ed25519.pub</code>. That is the one you
+              copy to GitHub or other machines.
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Step 3: View your public key</h2>
+
+            <p>
+              Whether you already had a key or just made one, you can print the
+              public key with:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <p>
+              This will print out one long line of text.
+            </p>
+
+            <p>
+              That is your public key. At this point, you can basically go
+              <em>yay</em>, because this is the thing you need.
+            </p>
+          </section>
+
+          <h2>Where to add the key</h2>
+
+          <div class="option-grid">
+            <div class="option-card">
+              <strong>Option A: GitHub or another website</strong>
+              <p>
+                Copy the public key and paste it into GitHub, GitLab, or another
+                service that supports SSH keys.
+              </p>
+            </div>
+
+            <div class="option-card">
+              <strong>Option B: Remote machine</strong>
+              <p>
+                Copy the public key to a remote machine so future SSH logins are
+                easier.
+              </p>
+            </div>
+          </div>
+
+          <section class="step">
+            <h2>Option A: Copy it into GitHub or another website</h2>
+
+            <p>
+              A very common use is adding your SSH key to GitHub.
+            </p>
+
+            <p>You can print it:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <p>
+              Then copy the whole line and paste it into the SSH keys section of
+              GitHub, GitLab, or wherever else you need it.
+            </p>
+
+            <p>
+              Make sure you copy the entire line, starting with something like:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Public key start</div>
+              <pre><code>ssh-ed25519 ...</code></pre>
+            </div>
+
+            <p>
+              Include the label at the end too.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Option B: Add it to a remote machine</h2>
+
+            <p>
+              If you want to log into a remote machine without typing your
+              password every time, you can copy your key over directly with:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>ssh-copy-id username@remote_machine</code></pre>
+            </div>
+
+            <p>For example:</p>
+
+            <div class="code-block">
+              <div class="code-label">Example</div>
+              <pre><code>ssh-copy-id YOUR_USERNAME@moria.egr.msu.edu</code></pre>
+            </div>
+
+            <p>
+              This will ask for your password one last time, and then it adds
+              your public key to the remote machine's trusted keys.
+            </p>
+
+            <p>
+              After that, future logins should be much easier.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>If ssh-copy-id does not work</h2>
+
+            <p>
+              Sometimes that command is not installed by default.
+            </p>
+
+            <p>
+              In that case, you can still do it manually.
+            </p>
+
+            <p>First, print your public key:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <p>Copy the output.</p>
+
+            <p>Then log into the remote machine normally:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>ssh username@remote_machine</code></pre>
+            </div>
+
+            <p>Make sure the <code>.ssh</code> directory exists:</p>
+
+            <div class="code-block">
+              <div class="code-label">Remote machine</div>
+              <pre><code>mkdir -p ~/.ssh
+chmod 700 ~/.ssh</code></pre>
+            </div>
+
+            <p>Then open the authorized keys file:</p>
+
+            <div class="code-block">
+              <div class="code-label">Remote machine</div>
+              <pre><code>nano ~/.ssh/authorized_keys</code></pre>
+            </div>
+
+            <p>
+              Paste your public key as a new line, save, and exit.
+            </p>
+
+            <p>Then run:</p>
+
+            <div class="code-block">
+              <div class="code-label">Remote machine</div>
+              <pre><code>chmod 600 ~/.ssh/authorized_keys</code></pre>
+            </div>
+
+            <p>
+              That does the same thing as <code>ssh-copy-id</code>, just
+              manually.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Quick version</h2>
+
+            <p>If you need the short version:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>ls -la ~/.ssh
+ssh-keygen -t ed25519 -C "your_email@example.com"
+cat ~/.ssh/id_ed25519.pub
+ssh-copy-id username@remote_machine</code></pre>
+            </div>
+
+            <div class="warning">
+              <strong>Warning</strong>
+              Never share your private key file.
+              <br /><br />
+              Share <code>id_ed25519.pub</code>, not
+              <code>id_ed25519</code>.
+            </div>
+          </section>
+
+          <h2>Adding your SSH key to GitHub</h2>
+
+          <p>
+            Adding your SSH key to your GitHub account is especially important
+            if you plan to:
+          </p>
+
+          <ul>
+            <li>Clone repositories using <code>git@github.com:...</code></li>
+            <li>Work on a remote machine, like a cluster, and pull or push code</li>
+          </ul>
+
+          <section class="step">
+            <h3>Step 1: Go to GitHub Settings</h3>
+
+            <p>
+              Click your profile icon in the top right and go to
+              <strong>Settings</strong>.
+            </p>
+
+            <figure class="screenshot">
+              <img
+                src="SSH_key/github_ssh1.png"
+                alt="GitHub profile menu with Settings option"
+              />
+            </figure>
+          </section>
+
+          <section class="step">
+            <h3>Step 2: Navigate to SSH Keys</h3>
+
+            <p>
+              On the left sidebar, click <strong>SSH and GPG keys</strong>.
+            </p>
+
+            <figure class="screenshot">
+              <img
+                src="SSH_key/github_ssh2.png"
+                alt="GitHub settings sidebar with SSH and GPG keys option"
+              />
+            </figure>
+          </section>
+
+          <section class="step">
+            <h3>Step 3: Add a new SSH key</h3>
+
+            <p>
+              Click the <strong>New SSH key</strong> button.
+            </p>
+
+            <figure class="screenshot">
+              <img
+                src="SSH_key/github_ssh3.png"
+                alt="GitHub New SSH key button"
+              />
+            </figure>
+          </section>
+
+          <section class="step">
+            <h3>Step 4: Paste your public key</h3>
+
+            <p>Back in your terminal, run:</p>
+
+            <div class="code-block">
+              <div class="code-label">Terminal</div>
+              <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <p>Copy the entire output.</p>
+
+            <p>Then:</p>
+
+            <ul>
+              <li>Give it a name, like <strong>My Laptop</strong> or <strong>Moria Cluster</strong></li>
+              <li>Paste the key into the big box</li>
+            </ul>
+
+            <figure class="screenshot">
+              <img
+                src="SSH_key/github_ssh4.png"
+                alt="GitHub form for adding a new SSH key"
+              />
+            </figure>
+
+            <p>
+              Click <strong>Add SSH key</strong>.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Important note for remote machines</h2>
+
+            <p>
+              If you are working on a remote machine, like a cluster or server,
+              and want to <code>git clone</code> from GitHub on that machine, you
+              need to:
+            </p>
+
+            <ul>
+              <li>Generate an SSH key <strong>on that machine</strong></li>
+              <li>Run:</li>
+            </ul>
+
+            <div class="code-block">
+              <div class="code-label">Remote machine</div>
+              <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+            </div>
+
+            <ul>
+              <li>Add <strong>that key</strong> to GitHub as well</li>
+            </ul>
+
+            <p>
+              Each machine needs its own key. Your laptop's key will not
+              automatically work on a remote system.
+            </p>
+
+            <div class="tip">
+              <strong>Tip</strong>
+              Think of it like giving each machine its own ID badge to access
+              your GitHub account.
+            </div>
+          </section>
+
+          <div class="next-section">
+            <a class="next-card" href="07-peacock.html">
+              <span>Previous section</span>
+              <strong>07. Peacock</strong>
+            </a>
+
+            <a class="next-card" href="09-ruff.html">
+              <span>Next section</span>
+              <strong>09. Ruff</strong>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

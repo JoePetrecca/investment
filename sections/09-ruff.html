@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruff | VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="Set up Ruff in VS Code for Python linting, formatting, import organization, and cleaner code."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --tip-bg: #ecfeff;
+      --tip-border: #67e8f9;
+      --tip-text: #155e75;
+      --warning-bg: #fff7ed;
+      --warning-border: #fdba74;
+      --warning-text: #9a3412;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+      --radius: 22px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 34%, #f8fafc 34%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 56px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .content-panel {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .section-number {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin: 38px 0 12px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      margin: 30px 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #334155;
+    }
+
+    ul {
+      margin: 0 0 24px;
+      padding-left: 1.3rem;
+      color: #334155;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    blockquote {
+      margin: 20px 0 26px;
+      padding: 18px 20px;
+      border-left: 5px solid var(--accent);
+      border-radius: 16px;
+      background: var(--card-soft);
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .tip,
+    .warning {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+    }
+
+    .tip {
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+    }
+
+    .warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .tip strong,
+    .warning strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .tip strong {
+      color: #164e63;
+    }
+
+    .warning strong {
+      color: #7c2d12;
+    }
+
+    .code-block {
+      position: relative;
+      margin: 18px 0 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--code-bg);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .code-label {
+      padding: 10px 16px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 16px;
+      overflow-x: auto;
+      color: var(--code-text);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .step {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card-soft);
+    }
+
+    .step h2,
+    .step h3 {
+      margin-top: 0;
+    }
+
+    .screenshot {
+      margin: 18px auto 4px;
+      padding: 10px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .screenshot img {
+      display: block;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      border-radius: 12px;
+    }
+
+    .goal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 28px;
+    }
+
+    .goal-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+    }
+
+    .goal-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent-dark);
+    }
+
+    .goal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .rule-list {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 26px;
+    }
+
+    .rule-item {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+    }
+
+    .rule-item code {
+      display: inline-block;
+      margin-right: 8px;
+      color: var(--accent-dark);
+      font-weight: 800;
+    }
+
+    .next-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-card {
+      flex: 1;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .next-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .next-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .next-card strong {
+      color: var(--accent-dark);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .goal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .next-section {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="../index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#sections">Sections</a>
+          <a href="08-ssh-keys.html">Previous</a>
+          <a href="10-tmux.html">Next</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Section 09
+        </div>
+
+        <h1>Ruff</h1>
+
+        <p>
+          Ruff keeps Python code clean automatically. It formats code, fixes
+          small issues, organizes imports, and helps enforce consistent style.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Start setup</a>
+          <a class="button button-secondary" href="../index.html#sections">Back to sections</a>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <article class="content-panel" id="start">
+          <div class="section-number">09</div>
+
+          <p>
+            <strong>Ruff</strong> keeps your Python code clean automatically. It
+            formats your code, fixes small issues, enforces consistent naming
+            like <code>snake_case</code>, and organizes imports.
+          </p>
+
+          <figure class="screenshot">
+            <img
+              src="ruff/ruff1.png"
+              alt="VS Code showing Ruff extension or Ruff formatting setup"
+            />
+          </figure>
+
+          <p>
+            Once this is set up, you really do not think about formatting
+            anymore. You just write code and save.
+          </p>
+
+          <section class="step">
+            <h2>Install Ruff</h2>
+
+            <p>
+              Go to Extensions in VS Code, search for <strong>Ruff</strong>, and
+              install it.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Make it run automatically</h2>
+
+            <p>You want Ruff to:</p>
+
+            <div class="goal-grid">
+              <div class="goal-card">
+                <strong>Run on save</strong>
+                <p>Every saved Python file gets checked automatically.</p>
+              </div>
+
+              <div class="goal-card">
+                <strong>Fix issues</strong>
+                <p>Small formatting and linting problems can be cleaned up for you.</p>
+              </div>
+
+              <div class="goal-card">
+                <strong>Organize imports</strong>
+                <p>Imports are sorted and cleaned without manual work.</p>
+              </div>
+            </div>
+
+            <p>
+              That is controlled by your <code>settings.json</code>. Do not
+              overthink it. Just make sure:
+            </p>
+
+            <ul>
+              <li>Format on save is on</li>
+              <li>Ruff is your Python formatter</li>
+              <li>Fixes and import organization are enabled</li>
+            </ul>
+          </section>
+
+          <section class="step">
+            <h2>The pyproject.toml</h2>
+
+            <p>
+              This file tells Ruff how to behave, like line length, naming style,
+              and formatting rules.
+            </p>
+
+            <p>Do not spend time trying to perfect this.</p>
+
+            <p>Instead:</p>
+
+            <ul>
+              <li>Ask a generative AI to generate it for you</li>
+              <li>Tweak it slightly if needed</li>
+              <li>Move on</li>
+            </ul>
+
+            <blockquote>
+              Give me a Ruff config toml with 100 character line length,
+              snake_case, and auto-fixing.
+            </blockquote>
+
+            <p>
+              Paste it in and you are done.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Notebooks</h2>
+
+            <p>
+              For notebooks, just ask an AI how to enable Ruff for notebooks in
+              VS Code, or how to run it manually.
+            </p>
+
+            <p>Typically, you will use:</p>
+
+            <div class="code-block">
+              <div class="code-label">VS Code command</div>
+              <pre><code>Cmd/Ctrl + R, then U</code></pre>
+            </div>
+
+            <p>
+              And it will clean the notebook.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>That is it</h2>
+
+            <p>Do not over-engineer this. The goal is:</p>
+
+            <ul>
+              <li>Save your file</li>
+              <li>Code gets cleaned automatically</li>
+            </ul>
+
+            <p>
+              Once that works, you are good.
+            </p>
+
+            <div class="warning">
+              <strong>Warning</strong>
+              Don't have Ruff automatically change variable names for you, as
+              that can have cascading effects. Instead, allow it to underline
+              variable names that you consider not in the desired style, and
+              then you, as the programmer, can choose to fix them.
+            </div>
+          </section>
+
+          <h2>Example pyproject.toml for Ruff</h2>
+
+          <p>
+            Here is a reasonable starter configuration of a
+            <code>pyproject.toml</code> file:
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">pyproject.toml</div>
+            <pre><code>[tool.ruff]
+line-length = 100
+target-version = "py311"
+preview = true
+
+[tool.ruff.lint]
+select = [
+"E",
+"F",
+"N",
+"I",
+"B",
+"UP",
+"SIM",
+"C4",
+"ARG",
+"RUF",
+]
+
+ignore = [
+"E501",
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = [
+"E402",
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = true
+docstring-code-format = true</code></pre>
+          </div>
+
+          <h2>What this does</h2>
+
+          <p>
+            <code>line-length = 100</code> tells Ruff to format code around a
+            100-character line length.
+          </p>
+
+          <p>
+            <code>target-version = "py311"</code> tells Ruff to assume Python
+            3.11. This matters because Ruff can suggest newer Python syntax only
+            when that syntax is valid for your Python version.
+          </p>
+
+          <p>
+            <code>preview = true</code> enables newer Ruff rules and formatting
+            behavior that may not be fully stabilized yet.
+          </p>
+
+          <p>
+            The <code>select</code> section turns on groups of linting rules:
+          </p>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>E</code>
+              Basic Python style errors
+            </div>
+
+            <div class="rule-item">
+              <code>F</code>
+              Likely bugs, such as undefined variables or unused imports
+            </div>
+
+            <div class="rule-item">
+              <code>N</code>
+              Naming conventions, such as <code>snake_case</code> variables and
+              <code>CamelCase</code> classes
+            </div>
+
+            <div class="rule-item">
+              <code>I</code>
+              Import sorting
+            </div>
+
+            <div class="rule-item">
+              <code>B</code>
+              Bug-prone code patterns
+            </div>
+
+            <div class="rule-item">
+              <code>UP</code>
+              Suggestions for newer Python syntax
+            </div>
+
+            <div class="rule-item">
+              <code>SIM</code>
+              Simplifications for overly complicated code
+            </div>
+
+            <div class="rule-item">
+              <code>C4</code>
+              Cleaner list, set, and dictionary comprehensions
+            </div>
+
+            <div class="rule-item">
+              <code>ARG</code>
+              Unused function arguments
+            </div>
+
+            <div class="rule-item">
+              <code>RUF</code>
+              Ruff-specific best-practice rules
+            </div>
+          </div>
+
+          <p>
+            <code>ignore = ["E501"]</code> ignores line-length lint warnings
+            because the formatter already handles line wrapping.
+          </p>
+
+          <p>
+            <code>fixable = ["ALL"]</code> allows Ruff to automatically fix
+            anything it knows how to fix.
+          </p>
+
+          <p>
+            <code>unfixable = []</code> means there are no selected rules that
+            Ruff is forbidden from fixing.
+          </p>
+
+          <p>The notebook-specific ignore:</p>
+
+          <div class="code-block">
+            <div class="code-label">Notebook ignore</div>
+            <pre><code>"*.ipynb" = ["E402"]</code></pre>
+          </div>
+
+          <p>
+            Allows imports to appear outside the top of the file in Jupyter
+            notebooks. This is useful because notebooks are cell-based, and it is
+            common to have imports in different cells while exploring.
+          </p>
+
+          <p>The formatting section says:</p>
+
+          <ul>
+            <li>Use single quotes</li>
+            <li>Use spaces for indentation</li>
+            <li>Avoid magic trailing comma behavior</li>
+            <li>Format code examples inside docstrings</li>
+          </ul>
+
+          <div class="warning">
+            <strong>Warning</strong>
+            If you are working inside an existing collaboration, use that
+            collaboration's Ruff configuration. For example, TARDIS has its own
+            config file, and that should be treated as the source of truth when
+            contributing to TARDIS code.
+          </div>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            For personal projects, a local <code>pyproject.toml</code> like this
+            is a good starting point. For shared projects, follow the project's
+            existing config so everyone formats code the same way.
+          </div>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            A fully custom <code>pyproject.toml</code> can be intimidating to
+            write and understand. As mentioned above, you can ask an LLM to help
+            generate one. Give it the Ruff rules, or ask it to look them up, and
+            have it ask you questions about your coding style, formatting
+            preferences, and which kinds of linting rules you want to enforce.
+          </div>
+
+          <div class="next-section">
+            <a class="next-card" href="08-ssh-keys.html">
+              <span>Previous section</span>
+              <strong>08. SSH Keys</strong>
+            </a>
+
+            <a class="next-card" href="10-tmux.html">
+              <span>Next section</span>
+              <strong>10. tmux</strong>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

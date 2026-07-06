@@ -1,0 +1,578 @@
+lea<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extensions | VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="Recommended VS Code extensions for smoother programming, debugging, notebooks, CSVs, icons, and language support."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --tip-bg: #ecfeff;
+      --tip-border: #67e8f9;
+      --tip-text: #155e75;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+      --radius: 22px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 34%, #f8fafc 34%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 56px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .content-panel {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .section-number {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin: 38px 0 12px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #334155;
+    }
+
+    .tip {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+    }
+
+    .tip strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #164e63;
+    }
+
+    .extension-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 28px;
+    }
+
+    .extension-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+    }
+
+    .extension-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent-dark);
+      font-size: 1.02rem;
+    }
+
+    .extension-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .built-in-card {
+      margin-top: 20px;
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .built-in-card ul {
+      margin: 10px 0 0;
+      padding-left: 1.3rem;
+      color: #334155;
+    }
+
+    .built-in-card li {
+      margin: 7px 0;
+    }
+
+    .final-card {
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid #bae6fd;
+      background: #ecfeff;
+    }
+
+    .final-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #164e63;
+      font-size: 1.05rem;
+    }
+
+    .final-card p {
+      margin: 0;
+      color: #155e75;
+    }
+
+    .next-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-card {
+      flex: 1;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .next-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .next-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .next-card strong {
+      color: var(--accent-dark);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .extension-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .next-section {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="../index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#sections">Sections</a>
+          <a href="11-jupyter-tmux.html">Previous</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Section 12
+        </div>
+
+        <h1>Extensions</h1>
+
+        <p>
+          VS Code is powerful mostly because of extensions. You do not need all
+          of these immediately, but these are the ones that are commonly useful.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Read section</a>
+          <a class="button button-secondary" href="../index.html#sections">Back to sections</a>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <article class="content-panel" id="start">
+          <div class="section-number">12</div>
+
+          <p>
+            VS Code is powerful mostly because of extensions.
+          </p>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            For almost anything you want to do, there is probably already an
+            extension that makes it easier.
+          </div>
+
+          <p>
+            You do not need all of these immediately, but these are the ones we
+            commonly use.
+          </p>
+
+          <h2>Very helpful</h2>
+
+          <div class="extension-grid">
+            <div class="extension-card">
+              <strong>GitHub Copilot</strong>
+              <p>
+                Useful for boilerplate and exploring ideas. Treat it like a
+                helper, not something that writes everything for you.
+              </p>
+            </div>
+
+            <div class="extension-card">
+              <strong>Error Lens</strong>
+              <p>
+                Shows errors inline instead of just underlining them. Makes
+                debugging much easier.
+              </p>
+            </div>
+
+            <div class="extension-card">
+              <strong>Data Wrangler</strong>
+              <p>
+                Lets you visually inspect and clean CSVs and tabular data. Very
+                helpful if you are not fully comfortable with Pandas yet.
+              </p>
+            </div>
+
+            <div class="extension-card">
+              <strong>Rainbow CSV</strong>
+              <p>
+                Color-codes columns in CSV files so they are actually readable.
+              </p>
+            </div>
+
+            <div class="extension-card">
+              <strong>Material Icon Theme</strong>
+              <p>
+                Makes file and folder icons easier to distinguish. Small thing,
+                but nice.
+              </p>
+            </div>
+          </div>
+
+          <h2>Language-specific, as needed</h2>
+
+          <div class="extension-grid">
+            <div class="extension-card">
+              <strong>C/C++</strong>
+              <p>
+                Adds IntelliSense and basic debugging for C and C++.
+              </p>
+            </div>
+
+            <div class="extension-card">
+              <strong>Other languages</strong>
+              <p>
+                Whatever language you are using, there is almost always an
+                extension for it. Just search it.
+              </p>
+            </div>
+          </div>
+
+          <h2>Optional</h2>
+
+          <div class="extension-grid">
+            <div class="extension-card">
+              <strong>Gather by Microsoft</strong>
+              <p>
+                Useful for notebooks. Can extract the exact cells needed to run
+                something and package them cleanly.
+              </p>
+            </div>
+          </div>
+
+          <h2>Git and SSH</h2>
+
+          <div class="built-in-card">
+            <p>
+              VS Code already has built-in Git support, so you do not need an
+              extension for that.
+            </p>
+
+            <p>
+              SSH keys are also something you set up once. See the SSH section
+              for that. They let you:
+            </p>
+
+            <ul>
+              <li>Connect to GitHub without passwords</li>
+              <li>Connect to remote machines more easily</li>
+            </ul>
+          </div>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            Once SSH keys and Project Manager are set up, your workflow becomes
+            much faster.
+          </div>
+
+          <h2>Final thought</h2>
+
+          <div class="final-card">
+            <strong>Do not install everything at once.</strong>
+            <p>
+              Start with the core tools, then add things as you need them. VS
+              Code is meant to grow with how you work.
+            </p>
+          </div>
+
+          <div class="next-section">
+            <a class="next-card" href="11-jupyter-tmux.html">
+              <span>Previous section</span>
+              <strong>11. Jupyter Code in tmux</strong>
+            </a>
+
+            <a class="next-card" href="../index.html#sections">
+              <span>Back to</span>
+              <strong>All sections</strong>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
