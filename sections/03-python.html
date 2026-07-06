@@ -390,6 +390,30 @@
         flex-direction: column;
       }
     }
+    .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 5px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.copy-btn:hover {
+  background: rgba(56, 189, 248, 0.18);
+  color: #7dd3fc;
+}
+
+.copy-btn.copied {
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.4);
+}
   </style>
 </head>
 
@@ -555,5 +579,25 @@
       </div>
     </footer>
   </div>
+
+<script>
+  document.querySelectorAll(".code-block").forEach((block) => {
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.textContent = "Copy";
+    btn.addEventListener("click", () => {
+      const code = block.querySelector("pre").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 1600);
+      });
+    });
+    block.appendChild(btn);
+  });
+</script>
 </body>
 </html>

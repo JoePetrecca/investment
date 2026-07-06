@@ -444,6 +444,30 @@
         flex-direction: column;
       }
     }
+  .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 5px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.copy-btn:hover {
+  background: rgba(56, 189, 248, 0.18);
+  color: #7dd3fc;
+}
+
+.copy-btn.copied {
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.4);
+}
   </style>
 </head>
 
@@ -514,7 +538,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up1.png"
+                src="SSH_Set_up_images/SSH_Set_up1.png"
                 alt="VS Code Remote Connection icon in the bottom left corner"
               />
             </figure>
@@ -526,7 +550,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up2.png"
+                src="SSH_Set_up_images/SSH_Set_up2.png"
                 alt="VS Code menu showing Connect to Host option"
               />
             </figure>
@@ -538,7 +562,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up3.png"
+                src="SSH_Set_up_images/SSH_Set_up3.png"
                 alt="VS Code menu showing Add New SSH Host option"
               />
             </figure>
@@ -567,7 +591,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up4.png"
+                src="SSH_Set_up_images/SSH_Set_up4.png"
                 alt="VS Code prompt for entering an SSH command"
               />
             </figure>
@@ -582,7 +606,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up5.png"
+                src="SSH_Set_up_images/SSH_Set_up5.png"
                 alt="VS Code prompt for selecting an SSH config file"
               />
             </figure>
@@ -600,7 +624,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up6.png"
+                src="SSH_Set_up_images/SSH_Set_up6.png"
                 alt="VS Code confirmation that the SSH host was added"
               />
             </figure>
@@ -617,7 +641,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up7.png"
+                src="SSH_Set_up_images/SSH_Set_up7.png"
                 alt="VS Code Remote Connection icon used again"
               />
             </figure>
@@ -630,7 +654,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up8.png"
+                src="SSH_Set_up_images/SSH_Set_up8.png"
                 alt="VS Code menu showing Connect to Host after setup"
               />
             </figure>
@@ -645,7 +669,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up9.png"
+                src="SSH_Set_up_images/SSH_Set_up9.png"
                 alt="VS Code list of configured SSH hosts"
               />
             </figure>
@@ -664,7 +688,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up10.png"
+                src="SSH_Set_up_images/SSH_Set_up10.png"
                 alt="Terminal prompt asking whether to accept the SSH fingerprint"
               />
             </figure>
@@ -677,7 +701,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up11.png"
+                src="SSH_Set_up_images/SSH_Set_up11.png"
                 alt="VS Code password prompt for the remote SSH machine"
               />
             </figure>
@@ -693,7 +717,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up12.png"
+                src="SSH_Set_up_images/SSH_Set_up12.png"
                 alt="VS Code Open Folder button while connected to a remote machine"
               />
             </figure>
@@ -709,7 +733,7 @@
 
             <figure class="screenshot">
               <img
-                src="../SSH_Set_up_images/SSH_Set_up13.png"
+                src="SSH_Set_up_images/SSH_Set_up13.png"
                 alt="VS Code workspace trust prompt"
               />
             </figure>
@@ -777,5 +801,24 @@
       </div>
     </footer>
   </div>
+<script>
+  document.querySelectorAll(".code-block").forEach((block) => {
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.textContent = "Copy";
+    btn.addEventListener("click", () => {
+      const code = block.querySelector("pre").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 1600);
+      });
+    });
+    block.appendChild(btn);
+  });
+</script>
 </body>
 </html>
