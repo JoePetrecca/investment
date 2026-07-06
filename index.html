@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="A practical setup guide for VS Code, WSL, Python environments, Remote SSH, Ruff, tmux, and other tools that make programming smoother."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
+      --radius: 22px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 32rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 42%, #f8fafc 42%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 64px 0 84px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+      max-width: 850px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 26px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 16px;
+      color: var(--white);
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .setup-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .setup-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.95rem;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.16);
+      color: #7dd3fc;
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .section {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 42px);
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      letter-spacing: -0.055em;
+      line-height: 1.05;
+    }
+
+    .section-heading p {
+      max-width: 520px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #bae6fd;
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.1);
+    }
+
+    .card-number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-link {
+      margin-top: auto;
+      padding-top: 20px;
+      color: var(--accent-dark);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .note {
+      margin-top: 28px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #ecfeff;
+      border: 1px solid #a5f3fc;
+      color: #155e75;
+    }
+
+    .note strong {
+      color: #164e63;
+    }
+
+    .why {
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .why-item {
+      padding: 22px;
+      border-radius: 18px;
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+    }
+
+    .why-item h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: -0.025em;
+    }
+
+    .why-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards,
+      .why {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section-heading {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .cards,
+      .why {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#sections">Sections</a>
+          <a href="#why">Why this matters</a>
+          <a href="sections/01-wsl.html">Start guide</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            One-time setup, long-term payoff
+          </div>
+
+          <h1>Set up VS Code so programming feels smoother.</h1>
+
+          <p>
+            This guide walks through the core tools that make development cleaner,
+            faster, and less frustrating: VS Code, WSL, Python environments,
+            Remote SSH, Project Manager, Ruff, tmux, and more.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#sections">View the sections</a>
+            <a class="button button-secondary" href="sections/01-wsl.html">Begin with WSL</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Guide highlights">
+          <h2>What this setup gives you</h2>
+          <ul class="setup-list">
+            <li><span class="check">✓</span> A shared workflow that is easier to debug</li>
+            <li><span class="check">✓</span> Clean Python environments for each project</li>
+            <li><span class="check">✓</span> Remote access to machines like Moria or ICER</li>
+            <li><span class="check">✓</span> Faster project switching inside VS Code</li>
+            <li><span class="check">✓</span> Safer long-running jobs with tmux</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <main>
+      <section class="section" id="sections">
+        <div class="container">
+          <div class="panel">
+            <div class="section-heading">
+              <div>
+                <h2>Guide sections</h2>
+              </div>
+              <p>
+                Each section is its own page so the guide stays readable and easy
+                to expand over time.
+              </p>
+            </div>
+
+            <div class="cards">
+              <a class="card" href="sections/01-wsl.html">
+                <span class="card-number">01</span>
+                <h3>Windows Subsystem for Linux</h3>
+                <p>
+                  Set up a real Linux environment inside Windows so tools behave
+                  more like they do on servers and shared systems.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/02-vscode.html">
+                <span class="card-number">02</span>
+                <h3>VS Code</h3>
+                <p>
+                  Install the main editor and understand why the lab uses one
+                  shared platform for development.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/03-python.html">
+                <span class="card-number">03</span>
+                <h3>Install Python</h3>
+                <p>
+                  Check whether Python is already installed and get it working
+                  cleanly on your system.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/04-environments.html">
+                <span class="card-number">04</span>
+                <h3>Miniforge and Micromamba</h3>
+                <p>
+                  Create isolated environments so different projects do not break
+                  each other with conflicting package versions.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/05-remote-ssh.html">
+                <span class="card-number">05</span>
+                <h3>Remote SSH</h3>
+                <p>
+                  Connect to remote machines from VS Code and work there almost
+                  like the files are local.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/06-project-manager.html">
+                <span class="card-number">06</span>
+                <h3>Project Manager</h3>
+                <p>
+                  Save projects as bookmarks so you can jump back into local or
+                  remote workspaces quickly.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/07-peacock.html">
+                <span class="card-number">07</span>
+                <h3>Peacock</h3>
+                <p>
+                  Color your VS Code workspaces so it is obvious which project or
+                  machine you are working in.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/08-ssh-keys.html">
+                <span class="card-number">08</span>
+                <h3>SSH Keys</h3>
+                <p>
+                  Set up key-based authentication for smoother access to GitHub
+                  and remote machines.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/09-ruff.html">
+                <span class="card-number">09</span>
+                <h3>Ruff</h3>
+                <p>
+                  Format, lint, clean imports, and catch small Python issues
+                  automatically.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/10-tmux.html">
+                <span class="card-number">10</span>
+                <h3>tmux</h3>
+                <p>
+                  Keep terminal sessions running even after you disconnect from a
+                  remote machine.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/11-jupyter-tmux.html">
+                <span class="card-number">11</span>
+                <h3>Jupyter Code in tmux</h3>
+                <p>
+                  Move long-running notebook code into a Python script and run it
+                  safely in tmux.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+
+              <a class="card" href="sections/12-extensions.html">
+                <span class="card-number">12</span>
+                <h3>Extensions</h3>
+                <p>
+                  Add helpful VS Code extensions for GitHub Copilot, Error Lens,
+                  Data Wrangler, Rainbow CSV, icons, and more.
+                </p>
+                <span class="card-link">Open section</span>
+              </a>
+            </div>
+
+            <div class="note">
+              <strong>Build note:</strong>
+              the section links assume you will put future pages inside a folder
+              named <code>sections</code>, with filenames like
+              <code>01-wsl.html</code> and <code>02-vscode.html</code>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container" id="why">
+        <div class="why">
+          <div class="why-item">
+            <h3>Less setup friction</h3>
+            <p>
+              A clean setup means less time fighting your machine and more time
+              solving the actual problem.
+            </p>
+          </div>
+
+          <div class="why-item">
+            <h3>Easier collaboration</h3>
+            <p>
+              When everyone uses similar tools, it becomes much easier to help
+              each other debug.
+            </p>
+          </div>
+
+          <div class="why-item">
+            <h3>Better remote workflow</h3>
+            <p>
+              Remote SSH, SSH keys, Project Manager, and tmux make remote
+              machines feel much easier to use.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
