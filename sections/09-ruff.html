@@ -406,6 +406,24 @@
       font-weight: 800;
     }
 
+    .rule-item .example {
+      display: block;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      color: #475569;
+      font-size: 0.9rem;
+    }
+
+    .rule-item .example code {
+      display: inline;
+      margin: 0;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
     .next-section {
       display: flex;
       justify-content: space-between;
@@ -475,30 +493,31 @@
         flex-direction: column;
       }
     }
-.copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  padding: 5px 12px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 8px;
-  background: rgba(148, 163, 184, 0.12);
-  color: #94a3b8;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-}
 
-.copy-btn:hover {
-  background: rgba(56, 189, 248, 0.18);
-  color: #7dd3fc;
-}
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      padding: 5px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 8px;
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+    }
 
-.copy-btn.copied {
-  color: #34d399;
-  border-color: rgba(52, 211, 153, 0.4);
-}
+    .copy-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      color: #7dd3fc;
+    }
+
+    .copy-btn.copied {
+      color: #34d399;
+      border-color: rgba(52, 211, 153, 0.4);
+    }
   </style>
 </head>
 
@@ -532,6 +551,7 @@
         <p>
           Ruff keeps Python code clean automatically. It formats code, fixes
           small issues, organizes imports, and helps enforce consistent style.
+          One tool, one config file, and you never think about formatting again.
         </p>
 
         <div class="hero-actions">
@@ -546,10 +566,29 @@
         <article class="content-panel" id="start">
           <div class="section-number">09</div>
 
+          <h2>What Ruff actually is</h2>
+
           <p>
-            <strong>Ruff</strong> keeps your Python code clean automatically. It
-            formats your code, fixes small issues, enforces consistent naming
-            like <code>snake_case</code>, and organizes imports.
+            <strong>Ruff</strong> is two tools in one:
+          </p>
+
+          <ul>
+            <li>
+              A <strong>linter</strong>: it reads your code and flags problems,
+              like unused imports, undefined variables, badly named variables,
+              and bug-prone patterns.
+            </li>
+            <li>
+              A <strong>formatter</strong>: it rewrites your code's spacing,
+              quotes, and line wrapping to a consistent style, similar to Black.
+            </li>
+          </ul>
+
+          <p>
+            Historically, people used several separate tools for this: Black for
+            formatting, Flake8 for linting, isort for import sorting, pyupgrade
+            for modernizing syntax. Ruff replaces all of them in one very fast
+            tool, which is why it has become the standard.
           </p>
 
           <figure class="screenshot">
@@ -569,7 +608,7 @@
 
             <p>
               Go to Extensions in VS Code, search for <strong>Ruff</strong>, and
-              install it.
+              install the one by Astral Software.
             </p>
           </section>
 
@@ -586,7 +625,7 @@
 
               <div class="goal-card">
                 <strong>Fix issues</strong>
-                <p>Small formatting and linting problems can be cleaned up for you.</p>
+                <p>Small formatting and linting problems get cleaned up for you.</p>
               </div>
 
               <div class="goal-card">
@@ -596,63 +635,372 @@
             </div>
 
             <p>
-              That is controlled by your <code>settings.json</code>. Do not
-              overthink it. Just make sure:
+              That is controlled by your VS Code <code>settings.json</code>. A
+              working setup looks like this:
             </p>
 
-            <ul>
-              <li>Format on save is on</li>
-              <li>Ruff is your Python formatter</li>
-              <li>Fixes and import organization are enabled</li>
-            </ul>
+            <div class="code-block">
+              <div class="code-label">settings.json</div>
+              <pre><code>{
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  }
+}</code></pre>
+            </div>
+
+            <p>
+              In plain terms: for Python files, use Ruff as the formatter,
+              format every time you save, and while you are at it, apply safe
+              fixes and organize imports.
+            </p>
           </section>
 
           <section class="step">
-            <h2>The pyproject.toml</h2>
+            <h2>The pyproject.toml: your one config file</h2>
 
             <p>
-              This file tells Ruff how to behave, like line length, naming style,
-              and formatting rules.
+              Ruff's behavior, like line length, naming style, which rules run,
+              and formatting preferences, is controlled by a file called
+              <code>pyproject.toml</code>.
             </p>
 
-            <p>Do not spend time trying to perfect this.</p>
-
-            <p>Instead:</p>
-
-            <ul>
-              <li>Ask a generative AI to generate it for you</li>
-              <li>Tweak it slightly if needed</li>
-              <li>Move on</li>
-            </ul>
-
-            <blockquote>
-              Give me a Ruff config toml with 100 character line length,
-              snake_case, and auto-fixing.
-            </blockquote>
+            <h3>Where to put it (this matters)</h3>
 
             <p>
-              Paste it in and you are done.
+              Put <code>pyproject.toml</code> at the <strong>base of your
+              project directory</strong> (the top-level folder, usually where
+              your Git repo starts). Ruff configuration <strong>cascades</strong>:
+              when Ruff checks a file, it walks up the directory tree from that
+              file until it finds the nearest <code>pyproject.toml</code>, and
+              uses that.
+            </p>
+
+            <p>So with a layout like this:</p>
+
+            <div class="code-block">
+              <div class="code-label">Project layout</div>
+              <pre><code>my_project/
+├── pyproject.toml      &lt;-- one config here
+├── analysis/
+│   └── clean_data.py   &lt;-- uses it
+├── notebooks/
+│   └── explore.ipynb   &lt;-- uses it
+└── scripts/
+    └── run_all.py      &lt;-- uses it</code></pre>
+            </div>
+
+            <p>
+              One file at the top governs every Python file and notebook below
+              it. You do not need to copy the config into subfolders. And if a
+              subfolder ever needs different rules, you can drop another config
+              there and it wins for that subtree, since the nearest config takes
+              priority.
             </p>
           </section>
+
+          <section class="step">
+            <h2>The full config</h2>
+
+            <p>
+              Here is the complete <code>pyproject.toml</code> Ruff section we
+              recommend. Copy it, paste it into a file named
+              <code>pyproject.toml</code> at the base of your project, and you
+              are done. Every line is explained below.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">pyproject.toml</div>
+              <pre><code>[tool.ruff]
+line-length = 100
+target-version = "py311"
+preview = true
+
+[tool.ruff.lint]
+select = [
+  # Core correctness
+  "E",    # pycodestyle errors
+  "F",    # pyflakes
+
+  # Naming conventions
+  "N",    # pep8-naming (snake_case vars, CamelCase classes)
+
+  # Imports
+  "I",    # import sorting
+
+  # Bug detection
+  "B",    # flake8-bugbear
+
+  # Modernization
+  "UP",   # pyupgrade
+
+  # Code quality
+  "SIM",  # simplify
+  "C4",   # comprehensions
+  "ARG",  # unused arguments
+
+  # Ruff-specific best practices
+  "RUF",
+]
+
+# Formatter owns line length
+ignore = [
+  "E501",
+]
+
+# Allow Ruff to autofix aggressively
+fixable = ["ALL"]
+unfixable = []
+
+# Notebook-specific behavior
+[tool.ruff.lint.per-file-ignores]
+# Notebooks are cell-scoped, so allow imports that appear unused
+# You will control imports explicitly with an imports cell if needed
+"*.ipynb" = [
+  "E402",  # imports not at top of file
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = true
+docstring-code-format = true</code></pre>
+            </div>
+          </section>
+
+          <h2>Line by line: what every setting does</h2>
+
+          <h3>[tool.ruff] — the top-level settings</h3>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>line-length = 100</code>
+              Lines longer than 100 characters get wrapped by the formatter.
+              The old-school default is 79, which is cramped on modern screens;
+              100 is a comfortable middle ground.
+            </div>
+
+            <div class="rule-item">
+              <code>target-version = "py311"</code>
+              Tells Ruff to assume Python 3.11. This matters because Ruff only
+              suggests modern syntax that is actually valid for your version.
+              <span class="example">
+                Example: on 3.11, Ruff can rewrite <code>Optional[int]</code>
+                as <code>int | None</code>. On an older target it would not.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>preview = true</code>
+              Enables Ruff's newest rules and formatting behavior that are not
+              fully stabilized yet. You get improvements early; occasionally a
+              rule changes between versions. Fine for personal projects.
+            </div>
+          </div>
+
+          <h3>[tool.ruff.lint] — which rules run</h3>
+
+          <p>
+            The <code>select</code> list turns on <strong>groups</strong> of
+            rules. Each two-letter code is a whole family, mostly named after
+            the older standalone tool it absorbed:
+          </p>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>E</code>
+              pycodestyle errors: basic Python style, like spacing around
+              operators and indentation.
+              <span class="example">
+                Flags <code>x=1</code> and fixes it to <code>x = 1</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>F</code>
+              pyflakes: likely real bugs, like undefined variables and unused
+              imports.
+              <span class="example">
+                Flags <code>import os</code> when <code>os</code> is never
+                used, and catches typos like using <code>reslut</code> when you
+                defined <code>result</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>N</code>
+              pep8-naming: enforces Python naming conventions, like
+              <code>snake_case</code> for variables and functions and
+              <code>CamelCase</code> for classes.
+              <span class="example">
+                Underlines <code>myVariable = 3</code> and suggests
+                <code>my_variable</code>. (Note: it underlines, it does not
+                rename for you. See the warning below.)
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>I</code>
+              import sorting (replaces isort): keeps imports grouped and
+              alphabetized: standard library first, then third-party packages,
+              then your own modules.
+              <span class="example">
+                Reorders <code>import pandas</code> above your own
+                <code>import my_utils</code>, but below <code>import os</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>B</code>
+              flake8-bugbear: patterns that are legal Python but cause real
+              bugs.
+              <span class="example">
+                Flags <code>def f(items=[])</code>: a mutable default argument
+                is shared between calls, a classic Python trap.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>UP</code>
+              pyupgrade: rewrites old syntax into the modern equivalent for
+              your target version.
+              <span class="example">
+                Rewrites <code>"hello %s" % name</code> as
+                <code>f"hello {name}"</code>, and <code>List[int]</code> as
+                <code>list[int]</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>SIM</code>
+              simplify: flags code that can be written more directly.
+              <span class="example">
+                Rewrites <code>if x == True:</code> as <code>if x:</code>, and
+                collapses nested <code>if a: if b:</code> into
+                <code>if a and b:</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>C4</code>
+              comprehensions: cleaner list, set, and dict construction.
+              <span class="example">
+                Rewrites <code>list(x for x in y)</code> as
+                <code>[x for x in y]</code>.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>ARG</code>
+              unused arguments: flags function parameters that are never used
+              in the body, often leftovers from refactoring.
+              <span class="example">
+                Flags <code>verbose</code> in <code>def run(data,
+                verbose):</code> if the function never touches it.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>RUF</code>
+              Ruff-specific best practices that do not fit the older tools'
+              categories.
+              <span class="example">
+                Flags implicitly concatenated strings and unnecessary
+                <code># noqa</code> comments that no longer suppress anything.
+              </span>
+            </div>
+          </div>
+
+          <h3>ignore, fixable, unfixable</h3>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>ignore = ["E501"]</code>
+              E501 is the "line too long" <em>lint warning</em>. We turn it off
+              because the <em>formatter</em> already wraps long lines on save.
+              Without this, you would get warnings about lines the formatter is
+              about to fix anyway. Hence the comment: the formatter owns line
+              length.
+            </div>
+
+            <div class="rule-item">
+              <code>fixable = ["ALL"]</code>
+              Any rule that has a safe automatic fix is allowed to apply it.
+              This is what makes save-and-forget work.
+            </div>
+
+            <div class="rule-item">
+              <code>unfixable = []</code>
+              An empty blocklist: there are no rules we forbid Ruff from
+              fixing. If you ever wanted Ruff to flag something but never touch
+              it, you would list that rule code here.
+            </div>
+          </div>
+
+          <h3>Per-file ignores: the notebook exception</h3>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>"*.ipynb" = ["E402"]</code>
+              E402 says "imports must be at the top of the file." That makes
+              sense for scripts, but notebooks are cell-based: it is normal to
+              <code>import matplotlib</code> in cell 12 while exploring. This
+              line disables that one rule, only for notebook files. Everything
+              else still applies to notebooks.
+            </div>
+          </div>
+
+          <h3>[tool.ruff.format] — how code is styled</h3>
+
+          <div class="rule-list">
+            <div class="rule-item">
+              <code>quote-style = "single"</code>
+              Strings use single quotes.
+              <span class="example">
+                <code>"hello"</code> becomes <code>'hello'</code> on save.
+                Purely aesthetic; the point is that it is consistent everywhere.
+              </span>
+            </div>
+
+            <div class="rule-item">
+              <code>indent-style = "space"</code>
+              Indent with spaces, not tabs. The universal Python convention.
+            </div>
+
+            <div class="rule-item">
+              <code>skip-magic-trailing-comma = true</code>
+              Normally, a trailing comma after the last item "magically" forces
+              the formatter to keep a list split one-item-per-line. This
+              disables that: line length alone decides whether something is one
+              line or many, so formatting stays predictable.
+            </div>
+
+            <div class="rule-item">
+              <code>docstring-code-format = true</code>
+              If you put code examples inside docstrings, Ruff formats those
+              too, so your documentation examples match your real code style.
+            </div>
+          </div>
 
           <section class="step">
             <h2>Notebooks</h2>
 
             <p>
-              For notebooks, just ask an AI how to enable Ruff for notebooks in
-              VS Code, or how to run it manually.
+              Ruff works on notebooks too. With the config above, notebooks are
+              already covered, including the E402 exception. To clean a notebook
+              manually in VS Code, use:
             </p>
-
-            <p>Typically, you will use:</p>
 
             <div class="code-block">
               <div class="code-label">VS Code command</div>
               <pre><code>Cmd/Ctrl + R, then U</code></pre>
             </div>
 
-            <p>
-              And it will clean the notebook.
-            </p>
+            <p>And it will clean the notebook.</p>
           </section>
 
           <section class="step">
@@ -665,201 +1013,42 @@
               <li>Code gets cleaned automatically</li>
             </ul>
 
-            <p>
-              Once that works, you are good.
-            </p>
+            <p>Once that works, you are good.</p>
 
             <div class="warning">
               <strong>Warning</strong>
               Don't have Ruff automatically change variable names for you, as
               that can have cascading effects. Instead, allow it to underline
               variable names that you consider not in the desired style, and
-              then you, as the programmer, can choose to fix them.
+              then you, as the programmer, can choose to fix them. The config
+              above already behaves this way: naming rules (N) flag issues but
+              renaming is never an automatic fix.
             </div>
           </section>
-
-          <h2>Example pyproject.toml for Ruff</h2>
-
-          <p>
-            Here is a reasonable starter configuration of a
-            <code>pyproject.toml</code> file:
-          </p>
-
-          <div class="code-block">
-            <div class="code-label">pyproject.toml</div>
-            <pre><code>[tool.ruff]
-line-length = 100
-target-version = "py311"
-preview = true
-
-[tool.ruff.lint]
-select = [
-"E",
-"F",
-"N",
-"I",
-"B",
-"UP",
-"SIM",
-"C4",
-"ARG",
-"RUF",
-]
-
-ignore = [
-"E501",
-]
-
-fixable = ["ALL"]
-unfixable = []
-
-[tool.ruff.lint.per-file-ignores]
-"*.ipynb" = [
-"E402",
-]
-
-[tool.ruff.format]
-quote-style = "single"
-indent-style = "space"
-skip-magic-trailing-comma = true
-docstring-code-format = true</code></pre>
-          </div>
-
-          <h2>What this does</h2>
-
-          <p>
-            <code>line-length = 100</code> tells Ruff to format code around a
-            100-character line length.
-          </p>
-
-          <p>
-            <code>target-version = "py311"</code> tells Ruff to assume Python
-            3.11. This matters because Ruff can suggest newer Python syntax only
-            when that syntax is valid for your Python version.
-          </p>
-
-          <p>
-            <code>preview = true</code> enables newer Ruff rules and formatting
-            behavior that may not be fully stabilized yet.
-          </p>
-
-          <p>
-            The <code>select</code> section turns on groups of linting rules:
-          </p>
-
-          <div class="rule-list">
-            <div class="rule-item">
-              <code>E</code>
-              Basic Python style errors
-            </div>
-
-            <div class="rule-item">
-              <code>F</code>
-              Likely bugs, such as undefined variables or unused imports
-            </div>
-
-            <div class="rule-item">
-              <code>N</code>
-              Naming conventions, such as <code>snake_case</code> variables and
-              <code>CamelCase</code> classes
-            </div>
-
-            <div class="rule-item">
-              <code>I</code>
-              Import sorting
-            </div>
-
-            <div class="rule-item">
-              <code>B</code>
-              Bug-prone code patterns
-            </div>
-
-            <div class="rule-item">
-              <code>UP</code>
-              Suggestions for newer Python syntax
-            </div>
-
-            <div class="rule-item">
-              <code>SIM</code>
-              Simplifications for overly complicated code
-            </div>
-
-            <div class="rule-item">
-              <code>C4</code>
-              Cleaner list, set, and dictionary comprehensions
-            </div>
-
-            <div class="rule-item">
-              <code>ARG</code>
-              Unused function arguments
-            </div>
-
-            <div class="rule-item">
-              <code>RUF</code>
-              Ruff-specific best-practice rules
-            </div>
-          </div>
-
-          <p>
-            <code>ignore = ["E501"]</code> ignores line-length lint warnings
-            because the formatter already handles line wrapping.
-          </p>
-
-          <p>
-            <code>fixable = ["ALL"]</code> allows Ruff to automatically fix
-            anything it knows how to fix.
-          </p>
-
-          <p>
-            <code>unfixable = []</code> means there are no selected rules that
-            Ruff is forbidden from fixing.
-          </p>
-
-          <p>The notebook-specific ignore:</p>
-
-          <div class="code-block">
-            <div class="code-label">Notebook ignore</div>
-            <pre><code>"*.ipynb" = ["E402"]</code></pre>
-          </div>
-
-          <p>
-            Allows imports to appear outside the top of the file in Jupyter
-            notebooks. This is useful because notebooks are cell-based, and it is
-            common to have imports in different cells while exploring.
-          </p>
-
-          <p>The formatting section says:</p>
-
-          <ul>
-            <li>Use single quotes</li>
-            <li>Use spaces for indentation</li>
-            <li>Avoid magic trailing comma behavior</li>
-            <li>Format code examples inside docstrings</li>
-          </ul>
 
           <div class="warning">
             <strong>Warning</strong>
             If you are working inside an existing collaboration, use that
             collaboration's Ruff configuration. For example, TARDIS has its own
             config file, and that should be treated as the source of truth when
-            contributing to TARDIS code.
+            contributing to TARDIS code. Remember the cascade rule: whichever
+            <code>pyproject.toml</code> is nearest to the file wins.
           </div>
 
           <div class="tip">
             <strong>Tip</strong>
-            For personal projects, a local <code>pyproject.toml</code> like this
-            is a good starting point. For shared projects, follow the project's
-            existing config so everyone formats code the same way.
-          </div>
-
-          <div class="tip">
-            <strong>Tip</strong>
-            A fully custom <code>pyproject.toml</code> can be intimidating to
-            write and understand. As mentioned above, you can ask an LLM to help
-            generate one. Give it the Ruff rules, or ask it to look them up, and
+            For personal projects, the config above is a solid default: just
+            paste it in and move on. If you want to customize it, you can ask an
+            LLM to help. Give it the Ruff rules, or ask it to look them up, and
             have it ask you questions about your coding style, formatting
             preferences, and which kinds of linting rules you want to enforce.
+            A prompt like this works well:
           </div>
+
+          <blockquote>
+            Give me a Ruff config toml with 100 character line length,
+            snake_case, and auto-fixing.
+          </blockquote>
 
           <div class="next-section">
             <a class="next-card" href="08-ssh-keys.html">
@@ -885,24 +1074,25 @@ docstring-code-format = true</code></pre>
       </div>
     </footer>
   </div>
-<script>
-  document.querySelectorAll(".code-block").forEach((block) => {
-    const btn = document.createElement("button");
-    btn.className = "copy-btn";
-    btn.textContent = "Copy";
-    btn.addEventListener("click", () => {
-      const code = block.querySelector("pre").innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        btn.textContent = "Copied!";
-        btn.classList.add("copied");
-        setTimeout(() => {
-          btn.textContent = "Copy";
-          btn.classList.remove("copied");
-        }, 1600);
+
+  <script>
+    document.querySelectorAll(".code-block").forEach((block) => {
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", () => {
+        const code = block.querySelector("pre").innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.classList.remove("copied");
+          }, 1600);
+        });
       });
+      block.appendChild(btn);
     });
-    block.appendChild(btn);
-  });
-</script>
+  </script>
 </body>
 </html>

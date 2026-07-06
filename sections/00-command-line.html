@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linux Basics | VS Code Setup Investment Guide</title>
+  <meta
+    name="description"
+    content="The essential Linux and Unix terminal commands: navigating, managing files, piping, redirecting, and a few fun ones."
+  />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --card-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --accent: #38bdf8;
+      --accent-dark: #0284c7;
+      --accent-soft: #e0f2fe;
+      --border: #e2e8f0;
+      --tip-bg: #ecfeff;
+      --tip-border: #67e8f9;
+      --tip-text: #155e75;
+      --warning-bg: #fff7ed;
+      --warning-border: #fdba74;
+      --warning-text: #9a3412;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+      --radius: 22px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code {
+      font-family:
+        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 34%, #f8fafc 34%, #f8fafc 100%);
+    }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 24px 0;
+      color: var(--white);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 56px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(186, 230, 253, 0.22);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: #082f49;
+      box-shadow: 0 14px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    .button-primary:hover {
+      background: #7dd3fc;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      padding-bottom: 72px;
+    }
+
+    .content-panel {
+      margin-top: -38px;
+      position: relative;
+      z-index: 5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .section-number {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin: 38px 0 12px;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      margin: 30px 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: #334155;
+    }
+
+    ul {
+      margin: 0 0 24px;
+      padding-left: 1.3rem;
+      color: #334155;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .tip,
+    .warning {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+    }
+
+    .tip {
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      color: var(--tip-text);
+    }
+
+    .warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .tip strong,
+    .warning strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .tip strong {
+      color: #164e63;
+    }
+
+    .warning strong {
+      color: #7c2d12;
+    }
+
+    .code-block {
+      position: relative;
+      margin: 18px 0 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--code-bg);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .code-label {
+      padding: 10px 16px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 16px;
+      overflow-x: auto;
+      color: var(--code-text);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .step {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card-soft);
+    }
+
+    .step h2,
+    .step h3 {
+      margin-top: 0;
+    }
+
+    .step h3 {
+      margin-top: 26px;
+    }
+
+    .keys-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 26px;
+    }
+
+    .key-card {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: #334155;
+      font-size: 0.95rem;
+    }
+
+    .key-card code {
+      display: inline-block;
+      margin-right: 6px;
+      color: var(--accent-dark);
+      font-weight: 800;
+    }
+
+    .next-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 38px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .next-card {
+      flex: 1;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card-soft);
+      transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .next-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .next-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .next-card strong {
+      color: var(--accent-dark);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 38px 0 46px;
+      color: #64748b;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .keys-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .next-section {
+        flex-direction: column;
+      }
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      padding: 5px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 8px;
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      color: #7dd3fc;
+    }
+
+    .copy-btn.copied {
+      color: #34d399;
+      border-color: rgba(52, 211, 153, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a href="../index.html" class="brand" aria-label="VS Code Setup Guide home">
+          <span class="brand-mark">VS</span>
+          <span>Setup Investment Guide</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#sections">Sections</a>
+          <a href="01-wsl.html">Next</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Section 00
+        </div>
+
+        <h1>Linux Basics</h1>
+
+        <p>
+          Everything in this guide happens in a terminal at some point. This
+          section is your foundation: how to move around, manage files, chain
+          commands together, and not be scared of the blinking cursor.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Start learning</a>
+          <a class="button button-secondary" href="../index.html#sections">Back to sections</a>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <article class="content-panel" id="start">
+          <div class="section-number">00</div>
+
+          <p>
+            The terminal looks intimidating, but it runs on a tiny vocabulary.
+            Maybe 15 commands cover 95% of what you will ever do. Learn these
+            once and every other section of this guide gets easier: WSL, remote
+            machines, tmux, environments, all of it is just these commands.
+          </p>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            You cannot really break anything by looking around. Navigating and
+            listing files is completely safe. The only commands that need
+            respect are the ones that delete things, and we will flag those
+            clearly.
+          </div>
+
+          <h2>The mental model</h2>
+
+          <p>
+            Your computer's files are a tree. Folders (called
+            <strong>directories</strong> in Linux-speak) contain files and other
+            directories. At any moment, your terminal is "standing" in exactly
+            one directory, called your <strong>working directory</strong>. Most
+            commands act on whatever is around you, unless you point them
+            somewhere else.
+          </p>
+
+          <p>Three special names to know:</p>
+
+          <ul>
+            <li><code>~</code> is your home directory, your personal base camp</li>
+            <li><code>.</code> is the directory you are standing in right now</li>
+            <li><code>..</code> is the directory one level up</li>
+          </ul>
+
+          <section class="step">
+            <h2>Moving around</h2>
+
+            <h3>pwd: where am I?</h3>
+
+            <p>
+              Prints your current location as a full path. When in doubt, run
+              this first.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Print working directory</div>
+              <pre><code>pwd</code></pre>
+            </div>
+
+            <h3>ls: what is here?</h3>
+
+            <p>Lists the files and directories around you.</p>
+
+            <div class="code-block">
+              <div class="code-label">List files</div>
+              <pre><code>ls</code></pre>
+            </div>
+
+            <p>
+              The upgraded version you will use constantly: <code>-l</code>
+              gives a detailed list (sizes, dates, permissions),
+              <code>-a</code> also shows hidden files, whose names start with a
+              dot, like <code>.bashrc</code>.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">List everything, with details</div>
+              <pre><code>ls -la</code></pre>
+            </div>
+
+            <h3>cd: go somewhere</h3>
+
+            <p>Change directory. Give it a place to go:</p>
+
+            <div class="code-block">
+              <div class="code-label">Go into a folder</div>
+              <pre><code>cd my_project</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Go up one level</div>
+              <pre><code>cd ..</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Go home from anywhere</div>
+              <pre><code>cd ~</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Go back to where you just were</div>
+              <pre><code>cd -</code></pre>
+            </div>
+
+            <div class="tip">
+              <strong>Tip</strong>
+              The workflow loop is: <code>pwd</code> (where am I?),
+              <code>ls</code> (what is here?), <code>cd</code> (go there),
+              repeat. That loop is 80% of terminal life.
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Making and managing files</h2>
+
+            <h3>mkdir: make a directory</h3>
+
+            <div class="code-block">
+              <div class="code-label">Make a folder</div>
+              <pre><code>mkdir analysis</code></pre>
+            </div>
+
+            <p>
+              Need nested folders in one shot? <code>-p</code> creates the whole
+              chain, including any missing parents:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Make nested folders</div>
+              <pre><code>mkdir -p project/data/raw</code></pre>
+            </div>
+
+            <h3>touch: make an empty file</h3>
+
+            <div class="code-block">
+              <div class="code-label">Create an empty file</div>
+              <pre><code>touch notes.txt</code></pre>
+            </div>
+
+            <h3>cp: copy</h3>
+
+            <p>Pattern: <code>cp source destination</code>.</p>
+
+            <div class="code-block">
+              <div class="code-label">Copy a file</div>
+              <pre><code>cp results.csv results_backup.csv</code></pre>
+            </div>
+
+            <p>Copying a whole directory needs <code>-r</code> (recursive):</p>
+
+            <div class="code-block">
+              <div class="code-label">Copy a folder and its contents</div>
+              <pre><code>cp -r project/ project_backup/</code></pre>
+            </div>
+
+            <h3>mv: move or rename</h3>
+
+            <p>
+              One command, two jobs. Move a file somewhere, or "move" it to a
+              new name, which is how renaming works in Linux.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Move a file into a folder</div>
+              <pre><code>mv results.csv data/</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Rename a file</div>
+              <pre><code>mv draft.txt final.txt</code></pre>
+            </div>
+
+            <h3>rm: delete</h3>
+
+            <div class="code-block">
+              <div class="code-label">Delete a file</div>
+              <pre><code>rm old_notes.txt</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Delete a folder and everything in it</div>
+              <pre><code>rm -r old_project/</code></pre>
+            </div>
+
+            <div class="warning">
+              <strong>Warning</strong>
+              There is no trash can. <code>rm</code> is permanent and instant.
+              Read the command twice before hitting enter, especially with
+              <code>-r</code>. And never run <code>rm -rf</code> on a path you
+              are not 100% sure about; it force-deletes without asking.
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Looking inside files</h2>
+
+            <h3>cat: dump the whole file</h3>
+
+            <p>Prints the entire file to your screen. Great for short files.</p>
+
+            <div class="code-block">
+              <div class="code-label">Show a file</div>
+              <pre><code>cat notes.txt</code></pre>
+            </div>
+
+            <h3>less: scroll through a big file</h3>
+
+            <p>
+              Opens the file in a scrollable viewer. Arrow keys to move,
+              <code>/word</code> to search, <code>q</code> to quit. This is what
+              you use when <code>cat</code> would flood your screen.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Page through a file</div>
+              <pre><code>less big_log.txt</code></pre>
+            </div>
+
+            <h3>head and tail: just the edges</h3>
+
+            <p>First 10 lines, or last 10 lines. Perfect for peeking at a CSV.</p>
+
+            <div class="code-block">
+              <div class="code-label">First 10 lines</div>
+              <pre><code>head data.csv</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Last 20 lines</div>
+              <pre><code>tail -n 20 data.csv</code></pre>
+            </div>
+
+            <p>
+              The killer feature: <code>tail -f</code> "follows" a file live,
+              printing new lines as they appear. Perfect for watching a log
+              while a long job runs.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Watch a log in real time</div>
+              <pre><code>tail -f training.log</code></pre>
+            </div>
+
+            <h3>wc: count things</h3>
+
+            <p><code>wc -l</code> counts lines. How many rows in that CSV?</p>
+
+            <div class="code-block">
+              <div class="code-label">Count lines</div>
+              <pre><code>wc -l data.csv</code></pre>
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Finding things</h2>
+
+            <h3>grep: search inside files</h3>
+
+            <p>
+              Prints every line containing your search text. This one is worth
+              its weight in gold.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Search one file</div>
+              <pre><code>grep "error" training.log</code></pre>
+            </div>
+
+            <p>
+              Search every file in a whole project: <code>-r</code> searches
+              recursively, <code>-n</code> shows line numbers, <code>-i</code>
+              ignores case.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Search a whole folder</div>
+              <pre><code>grep -rni "todo" .</code></pre>
+            </div>
+
+            <p>
+              That example finds every "TODO", "todo", or "ToDo" in the current
+              directory (that is the <code>.</code>) and tells you the file and
+              line number for each.
+            </p>
+
+            <h3>find: search for files by name</h3>
+
+            <div class="code-block">
+              <div class="code-label">Find files by name pattern</div>
+              <pre><code>find . -name "*.csv"</code></pre>
+            </div>
+
+            <p>
+              That lists every CSV file anywhere under your current directory,
+              no matter how deeply nested.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Piping and redirecting: the superpower</h2>
+
+            <p>
+              Here is the big idea of Unix: every command reads a stream of text
+              in and writes a stream of text out. You can plug them into each
+              other like Lego bricks.
+            </p>
+
+            <h3>The pipe: |</h3>
+
+            <p>
+              The pipe takes the output of one command and feeds it into the
+              next. Read it as "and then."
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Count how many CSVs are here</div>
+              <pre><code>ls | wc -l</code></pre>
+            </div>
+
+            <p>
+              "List the files, <em>and then</em> count the lines." Since
+              <code>ls</code> outputs one name per line, that counts your files.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Find errors, keep only the recent ones</div>
+              <pre><code>grep "error" training.log | tail -n 5</code></pre>
+            </div>
+
+            <p>
+              "Find every error line, <em>and then</em> show me just the last
+              five." You can chain as many pipes as you want:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Triple chain</div>
+              <pre><code>cat data.csv | grep "2026" | wc -l</code></pre>
+            </div>
+
+            <p>"Show the file, keep only lines mentioning 2026, count them."</p>
+
+            <h3>Redirecting: &gt; and &gt;&gt;</h3>
+
+            <p>
+              Instead of printing to the screen, send output into a file.
+              <code>&gt;</code> creates or <strong>overwrites</strong> the file;
+              <code>&gt;&gt;</code> <strong>appends</strong> to the end.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Save output to a file (overwrite)</div>
+              <pre><code>grep "error" training.log &gt; errors.txt</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Add to the end of a file</div>
+              <pre><code>echo "run finished at 3pm" &gt;&gt; lab_notebook.txt</code></pre>
+            </div>
+
+            <div class="warning">
+              <strong>Warning</strong>
+              A single <code>&gt;</code> silently wipes the target file before
+              writing. If the file mattered, it is gone. When adding notes to an
+              existing file, you almost always want <code>&gt;&gt;</code>.
+            </div>
+
+            <h3>sort and uniq: classic pipe partners</h3>
+
+            <div class="code-block">
+              <div class="code-label">Unique values, counted, most common first</div>
+              <pre><code>sort names.txt | uniq -c | sort -rn</code></pre>
+            </div>
+
+            <p>
+              This trio is a mini data analysis: sort the lines, collapse
+              duplicates while counting them, then sort by the counts. It is a
+              value-counts operation with zero Python.
+            </p>
+          </section>
+
+          <section class="step">
+            <h2>Quality of life</h2>
+
+            <p>These are not commands, they are habits. Learn them early.</p>
+
+            <div class="keys-grid">
+              <div class="key-card">
+                <code>Tab</code>
+                Autocomplete. Type the first few letters of a file or command
+                and hit Tab. Never type a full filename again.
+              </div>
+
+              <div class="key-card">
+                <code>Up arrow</code>
+                Cycle back through your previous commands. Re-run without
+                retyping.
+              </div>
+
+              <div class="key-card">
+                <code>Ctrl + C</code>
+                Kill whatever is currently running. Your escape hatch when
+                something hangs.
+              </div>
+
+              <div class="key-card">
+                <code>Ctrl + R</code>
+                Search your command history. Start typing and it finds the
+                matching past command. Magic.
+              </div>
+
+              <div class="key-card">
+                <code>Ctrl + L</code>
+                Clear the screen. Same as typing <code>clear</code>.
+              </div>
+
+              <div class="key-card">
+                <code>q</code>
+                Quits most viewers, like <code>less</code>, <code>man</code>,
+                and <code>top</code>. If you feel stuck, try q.
+              </div>
+            </div>
+
+            <h3>Wildcards</h3>
+
+            <p>
+              <code>*</code> means "anything." It works with almost every
+              command:
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Move all CSVs into a folder</div>
+              <pre><code>mv *.csv data/</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">List all Python files</div>
+              <pre><code>ls *.py</code></pre>
+            </div>
+
+            <h3>history: what did I do?</h3>
+
+            <div class="code-block">
+              <div class="code-label">Show past commands</div>
+              <pre><code>history</code></pre>
+            </div>
+
+            <p>Combine with grep to find that command from last week:</p>
+
+            <div class="code-block">
+              <div class="code-label">Search your history</div>
+              <pre><code>history | grep "mamba create"</code></pre>
+            </div>
+
+            <h3>man and --help: the built-in docs</h3>
+
+            <p>
+              Every command documents itself. <code>man ls</code> opens the full
+              manual (quit with <code>q</code>); <code>ls --help</code> prints a
+              quick summary.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Read the manual</div>
+              <pre><code>man grep</code></pre>
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Checking on your machine</h2>
+
+            <h3>top: what is running?</h3>
+
+            <p>
+              A live view of every running process and how much CPU and memory
+              each is using. Quit with <code>q</code>. On many systems,
+              <code>htop</code> is a prettier version worth installing.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Live process viewer</div>
+              <pre><code>top</code></pre>
+            </div>
+
+            <h3>df and du: disk space</h3>
+
+            <div class="code-block">
+              <div class="code-label">How full are my drives?</div>
+              <pre><code>df -h</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">What is taking up space here?</div>
+              <pre><code>du -sh *</code></pre>
+            </div>
+
+            <p>
+              The <code>-h</code> means human-readable: sizes in MB and GB
+              instead of raw bytes. <code>du -sh *</code> is the one to run when
+              a cluster emails you about your storage quota.
+            </p>
+
+            <h3>which: where does a command live?</h3>
+
+            <p>
+              Shows the file path of the program a command actually runs.
+              Extremely useful for debugging "which Python am I using?"
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">Which python is active?</div>
+              <pre><code>which python3</code></pre>
+            </div>
+          </section>
+
+          <section class="step">
+            <h2>Fun little commands</h2>
+
+            <p>
+              Not required. But the terminal should feel like home, and home has
+              toys.
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">A calendar in your terminal</div>
+              <pre><code>cal</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">Your folder structure as a tree</div>
+              <pre><code>tree</code></pre>
+            </div>
+
+            <p>
+              (<code>tree</code> may need installing: <code>sudo apt install
+              tree</code>. Genuinely useful for seeing project structure at a
+              glance.)
+            </p>
+
+            <div class="code-block">
+              <div class="code-label">The weather, in your terminal</div>
+              <pre><code>curl wttr.in</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">A cow says whatever you want</div>
+              <pre><code>cowsay "hello world"</code></pre>
+            </div>
+
+            <div class="code-block">
+              <div class="code-label">A steam locomotive punishes your typos</div>
+              <pre><code>sl</code></pre>
+            </div>
+
+            <p>
+              <code>cowsay</code> and <code>sl</code> also need installing
+              (<code>sudo apt install cowsay sl</code>). <code>sl</code> exists
+              purely to run a train across your screen when you typo
+              <code>ls</code>. This is the culture you are joining.
+            </p>
+          </section>
+
+          <h2>The cheat sheet version</h2>
+
+          <ul>
+            <li><code>pwd</code> / <code>ls</code> / <code>cd</code> — where am I, what is here, go there</li>
+            <li><code>mkdir</code> / <code>touch</code> — make folders and files</li>
+            <li><code>cp</code> / <code>mv</code> / <code>rm</code> — copy, move or rename, delete (carefully)</li>
+            <li><code>cat</code> / <code>less</code> / <code>head</code> / <code>tail</code> — look inside files</li>
+            <li><code>grep</code> / <code>find</code> — search inside files, search for files</li>
+            <li><code>|</code> / <code>&gt;</code> / <code>&gt;&gt;</code> — chain commands, save output, append output</li>
+            <li><code>Tab</code> / <code>Ctrl+R</code> / <code>man</code> — autocomplete, search history, read docs</li>
+          </ul>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            Do not memorize this page. Bookmark it, then go use the terminal for
+            real work. Within two weeks these commands will be in your fingers,
+            not your notes.
+          </div>
+
+          <div class="next-section">
+            <a class="next-card" href="../index.html#sections">
+              <span>Back</span>
+              <strong>All sections</strong>
+            </a>
+
+            <a class="next-card" href="01-wsl.html">
+              <span>Next section</span>
+              <strong>01. WSL</strong>
+            </a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          VS Code Setup Investment Guide. Built as a practical onboarding guide
+          for smoother research programming.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.querySelectorAll(".code-block").forEach((block) => {
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", () => {
+        const code = block.querySelector("pre").innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.classList.remove("copied");
+          }, 1600);
+        });
+      });
+      block.appendChild(btn);
+    });
+  </script>
+</body>
+</html>

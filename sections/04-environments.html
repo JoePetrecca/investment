@@ -234,6 +234,13 @@
       letter-spacing: -0.04em;
     }
 
+    h3 {
+      margin: 30px 0 10px;
+      font-size: 1.12rem;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
     p {
       margin: 0 0 18px;
       color: #334155;
@@ -417,30 +424,31 @@
         flex-direction: column;
       }
     }
-  .copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  padding: 5px 12px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 8px;
-  background: rgba(148, 163, 184, 0.12);
-  color: #94a3b8;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-}
 
-.copy-btn:hover {
-  background: rgba(56, 189, 248, 0.18);
-  color: #7dd3fc;
-}
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      padding: 5px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 8px;
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+    }
 
-.copy-btn.copied {
-  color: #34d399;
-  border-color: rgba(52, 211, 153, 0.4);
-}
+    .copy-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      color: #7dd3fc;
+    }
+
+    .copy-btn.copied {
+      color: #34d399;
+      border-color: rgba(52, 211, 153, 0.4);
+    }
   </style>
 </head>
 
@@ -502,6 +510,14 @@
           </p>
 
           <p>
+            Here is the classic scenario: your research project needs an older
+            version of NumPy because a collaboration pins it, but your class
+            homework needs the newest one. If everything is installed globally,
+            upgrading NumPy for the homework silently breaks the research code.
+            You will not notice until something crashes weeks later.
+          </p>
+
+          <p>
             This is why we use <strong>Miniforge</strong> or
             <strong>Micromamba</strong>.
           </p>
@@ -517,15 +533,16 @@
           <p>That means:</p>
 
           <ul>
-            <li>One project can use Python 3.11</li>
-            <li>Another project can use a different setup</li>
-            <li>Nothing conflicts</li>
+            <li>One project can use Python 3.11 with an older NumPy</li>
+            <li>Another can use Python 3.12 with the newest everything</li>
+            <li>Nothing conflicts, because they never see each other</li>
           </ul>
 
           <div class="tip">
             <strong>Tip</strong>
             Think of environments as separate boxes for each project. Nothing
-            leaks between them.
+            leaks between them. Break one? Delete it and make a new one in two
+            minutes. Your other projects never notice.
           </div>
 
           <h2>Why we suggest this</h2>
@@ -554,7 +571,8 @@
               <h3>Miniforge</h3>
               <p>
                 More standard and familiar. This is a good default if you want
-                something close to the normal Conda experience.
+                something close to the normal Conda experience. Commands start
+                with <code>mamba</code>.
               </p>
             </div>
 
@@ -562,9 +580,17 @@
               <h3>Micromamba</h3>
               <p>
                 Faster and more lightweight. This is a good choice if you want a
-                smaller, quicker environment manager.
+                smaller, quicker environment manager. Commands start with
+                <code>micromamba</code>, but are otherwise identical.
               </p>
             </div>
+          </div>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            The commands below use <code>mamba</code>. If you installed
+            Micromamba instead, just swap in <code>micromamba</code>. Everything
+            else is the same.
           </div>
 
           <h2>Installation</h2>
@@ -599,27 +625,146 @@
             </a>
           </div>
 
-          <h2>Basic idea</h2>
+          <h2>The core workflow: three commands</h2>
 
           <p>
-            You do not need to memorize this. The typical workflow looks like
-            this:
+            You do not need to memorize much. The whole daily workflow is three
+            steps: create an environment, activate it, install what you need.
+            Each one is copyable on its own.
+          </p>
+
+          <h3>Step 1: Create an environment</h3>
+
+          <p>
+            This makes a new box named <code>myenv</code> with Python 3.11
+            inside. Name it after your project, like <code>thesis</code> or
+            <code>cmse202</code>, so you always know what it is for.
           </p>
 
           <div class="code-block">
-            <div class="code-label">Mamba</div>
-            <pre><code>mamba create -n myenv python=3.11
-mamba activate myenv
-mamba install numpy pandas</code></pre>
+            <div class="code-label">Create</div>
+            <pre><code>mamba create -n myenv python=3.11</code></pre>
           </div>
 
-          <p>Or with Micromamba:</p>
+          <h3>Step 2: Activate it</h3>
+
+          <p>
+            Activating means "step inside the box." Your terminal prompt will
+            change to show <code>(myenv)</code>, so you always know which
+            environment you are in. From now on, <code>python</code> and any
+            packages you install refer to this environment only.
+          </p>
 
           <div class="code-block">
-            <div class="code-label">Micromamba</div>
-            <pre><code>micromamba create -n myenv python=3.11
-micromamba activate myenv
-micromamba install numpy pandas</code></pre>
+            <div class="code-label">Activate</div>
+            <pre><code>mamba activate myenv</code></pre>
+          </div>
+
+          <h3>Step 3: Install packages</h3>
+
+          <p>
+            Install whatever the project needs. These land inside
+            <code>myenv</code> and nowhere else.
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">Install</div>
+            <pre><code>mamba install numpy pandas</code></pre>
+          </div>
+
+          <p>
+            That is it. Next time you work on this project: activate, work,
+            done.
+          </p>
+
+          <h2>Other commands you will actually use</h2>
+
+          <h3>See all your environments</h3>
+
+          <p>
+            Forgot what you named something? This lists every environment you
+            have made.
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">List environments</div>
+            <pre><code>mamba env list</code></pre>
+          </div>
+
+          <h3>Step out of an environment</h3>
+
+          <p>
+            This puts you back in your normal terminal, outside any box.
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">Deactivate</div>
+            <pre><code>mamba deactivate</code></pre>
+          </div>
+
+          <h3>Delete an environment</h3>
+
+          <p>
+            Broke something beyond repair, or finished the project? Remove the
+            whole box. Nothing else on your system is affected. This is the
+            superpower: mistakes are cheap.
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">Remove</div>
+            <pre><code>mamba env remove -n myenv</code></pre>
+          </div>
+
+          <h2>A concrete example</h2>
+
+          <p>
+            Say you are starting a research project analyzing survey data. A
+            realistic setup, one command at a time:
+          </p>
+
+          <div class="code-block">
+            <div class="code-label">Create the project environment</div>
+            <pre><code>mamba create -n survey_analysis python=3.11</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label">Activate it</div>
+            <pre><code>mamba activate survey_analysis</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-label">Install the data stack</div>
+            <pre><code>mamba install numpy pandas matplotlib jupyter</code></pre>
+          </div>
+
+          <p>
+            Six months later, a new class needs bleeding-edge packages? Make a
+            second environment for it. Your <code>survey_analysis</code> results
+            stay reproducible forever, because its box never changed.
+          </p>
+
+          <h2>Using environments in VS Code</h2>
+
+          <p>
+            VS Code needs to know which environment to run your code with. Open
+            the Command Palette (<code>Cmd/Ctrl + Shift + P</code>), type
+            <strong>Python: Select Interpreter</strong>, and pick your
+            environment from the list, for example
+            <code>myenv</code>.
+          </p>
+
+          <p>
+            Notebooks have the same idea: the <strong>kernel picker</strong> in
+            the top right of a notebook lets you choose which environment runs
+            your cells.
+          </p>
+
+          <div class="tip">
+            <strong>Tip</strong>
+            If VS Code says a package is missing but you just installed it, the
+            most common cause is that VS Code is pointed at the wrong
+            interpreter. Check the interpreter first, before reinstalling
+            anything.
           </div>
 
           <div class="next-section">
@@ -646,24 +791,25 @@ micromamba install numpy pandas</code></pre>
       </div>
     </footer>
   </div>
-<script>
-  document.querySelectorAll(".code-block").forEach((block) => {
-    const btn = document.createElement("button");
-    btn.className = "copy-btn";
-    btn.textContent = "Copy";
-    btn.addEventListener("click", () => {
-      const code = block.querySelector("pre").innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        btn.textContent = "Copied!";
-        btn.classList.add("copied");
-        setTimeout(() => {
-          btn.textContent = "Copy";
-          btn.classList.remove("copied");
-        }, 1600);
+
+  <script>
+    document.querySelectorAll(".code-block").forEach((block) => {
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", () => {
+        const code = block.querySelector("pre").innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = "Copy";
+            btn.classList.remove("copied");
+          }, 1600);
+        });
       });
+      block.appendChild(btn);
     });
-    block.appendChild(btn);
-  });
-</script>
+  </script>
 </body>
 </html>
