@@ -425,6 +425,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -438,7 +439,6 @@
 
         <nav class="nav-links" aria-label="Main navigation">
           <a href="#sections">Sections</a>
-          <a href="#why">Why this matters</a>
           <a href="sections/01-wsl.html">Start guide</a>
         </nav>
       </div>
@@ -466,16 +466,16 @@
           </div>
         </div>
 
-        <aside class="hero-card" aria-label="Guide highlights">
-          <h2>What this setup gives you</h2>
-          <ul class="setup-list">
-            <li><span class="check">✓</span> A shared workflow that is easier to debug</li>
-            <li><span class="check">✓</span> Clean Python environments for each project</li>
-            <li><span class="check">✓</span> Remote access to machines like ICER</li>
-            <li><span class="check">✓</span> Faster project switching inside VS Code</li>
-            <li><span class="check">✓</span> Safer long-running jobs with tmux</li>
-          </ul>
-        </aside>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-header"><span></span><span></span><span></span></div>
+          <div class="visual-body">
+            <div class="visual-line visual-line-short"></div>
+            <div class="visual-line visual-line-blue"></div>
+            <div class="visual-line visual-line-long"></div>
+            <div class="visual-line visual-line-medium"></div>
+            <div class="visual-cursor"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -627,33 +627,6 @@
         </div>
       </section>
 
-      <section class="container" id="why">
-        <div class="why">
-          <div class="why-item">
-            <h3>Less setup friction</h3>
-            <p>
-              A clean setup means less time fighting your machine and more time
-              solving the actual problem.
-            </p>
-          </div>
-
-          <div class="why-item">
-            <h3>Easier collaboration</h3>
-            <p>
-              When everyone uses similar tools, it becomes much easier to help
-              each other debug.
-            </p>
-          </div>
-
-          <div class="why-item">
-            <h3>Better remote workflow</h3>
-            <p>
-              Remote SSH, SSH keys, Project Manager, and tmux make remote
-              machines feel much easier to use.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
